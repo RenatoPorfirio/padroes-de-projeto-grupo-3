@@ -1,12 +1,10 @@
 public class BookManagement
 {
-    private EstandeFactory factory;
     private Dictionary<EstandeType, List<Estande>> biblioteca;
     private readonly object objLock;
     
-    public BookManagement(EstandeFactory factory, Dictionary<EstandeType, List<Estande>> biblioteca)
+    public BookManagement(Dictionary<EstandeType, List<Estande>> biblioteca)
     {
-        this.factory = factory;
         this.biblioteca = biblioteca;
         this.objLock = new object();
     }
