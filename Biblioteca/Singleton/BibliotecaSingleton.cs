@@ -12,7 +12,7 @@ public class BibliotecaSingleton
         this.factory = new EstandeFactory();
         this.biblioteca = new Dictionary<EstandeType, List<Estande>>();
         this.estandeManagement = new EstandeManagement(factory, biblioteca);
-        this.bookManagement = new BookManagement(factory, biblioteca);
+        this.bookManagement = new BookManagement(biblioteca);
         //Estandes do tipo SCIENCE_ESTANDE;
         this.biblioteca.Add(EstandeType.SCIENCE_ESTANDE, new List<Estande>());
         //Estandes do tipo LITERATURE_ESTANDE;
