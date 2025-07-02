@@ -4,7 +4,7 @@ public class EstandeFactory
 {
     private static EstandeFactory?[] estandeFactory = Assembly.GetExecutingAssembly().GetTypes()
                             .Where(t => t.IsSubclassOf(typeof(EstandeFactory)) && !t.IsAbstract)
-                            .Select(t => (EstandeFactory)Activator.CreateInstance(t))
+                            .Select(t => (EstandeFactory?)Activator.CreateInstance(t))
                             .ToArray();
 
     protected Estande? estande;
