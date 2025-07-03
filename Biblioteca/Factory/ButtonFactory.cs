@@ -1,42 +1,23 @@
-using Microsoft.Maui.Controls;
-using Biblioteca.Singleton.Theme;
+using Biblioteca.Abstract;
+using Biblioteca.Factory.Buttons;
+using System;
 
-namespace Biblioteca.Factory;
-
-public static class ButtonFactory
+namespace Biblioteca.Factory
 {
-    public static Button CreateButton(string text, EventHandler? onClick = null, Style? customStyle = null)
+    public static class ButtonFactory
     {
-        var button = new Button
+        public static ButtonAbstract CreateButton(ButtonType type)
         {
-            Text = text,
-        };
-
-        ApplyProperties(button, customStyle);
-
-        if (onClick != null)
-        {
-            button.Clicked += onClick;
-        }
-
-        return button;
-    }
-
-    private static void ApplyProperties(Button button, Style? customStyle = null)
-    {
-        // Aplica as propriedades padrão da fábrica
-        button.BackgroundColor = ThemeManagerSingleton.Instance.CurrentColors.Primary;
-        button.TextColor = ThemeManagerSingleton.Instance.CurrentColors.PrimaryForeground;
-        button.BorderColor = ThemeManagerSingleton.Instance.CurrentColors.Secondary;
-        button.BorderWidth = 1;
-        button.MinimumWidthRequest = 200;
-        button.CornerRadius = 5;
-        button.Padding = new Thickness(10);
-
-        if (customStyle != null)
-        {
-            button.Style = customStyle;
+            ButtonAbstract button = type switch
+            {
+                ButtonType.DEFAULT_BUTTON => new DefaultButton(),
+                ButtonType.CONFIRM_BUTTON => new ConfirmButton(),
+                ButtonType.CANCEL_BUTTON => new CancelButton(),
+                ButtonType.THEME_BUTTON => new ThemeButton(),
+                _ => throw new ArgumentException("Botao invalido"),
+            };
+            button.SetButtonProperties();
+            return button;
         }
     }
-
 }

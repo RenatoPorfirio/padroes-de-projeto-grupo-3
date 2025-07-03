@@ -1,7 +1,6 @@
 ﻿using Biblioteca.Common.Theme;
 using Biblioteca.Singleton.Theme;
 using Biblioteca.Factory;
-
 using Microsoft.Maui.Controls;
 using System.ComponentModel;
 
@@ -15,37 +14,33 @@ public partial class MainPage : ContentPage
         Build();
     }
 
-	private void Build()
-	{
-		if (Content is ScrollView scrollView && scrollView.Content is VerticalStackLayout layout)
-		{
-			layout.Children.Clear();
-		}
-		else
-		{
-			var newLayout = new VerticalStackLayout
-			{
-				Padding = new Thickness(30, 0),
-				Spacing = 25
-			};
-			Content = new ScrollView { Content = newLayout };
-		}
+    private void Build()
+    {
+        if (Content is ScrollView scrollView && scrollView.Content is VerticalStackLayout layout)
+        {
+            layout.Children.Clear();
+        }
+        else
+        {
+            var newLayout = new VerticalStackLayout
+            {
+                Padding = new Thickness(30, 100, 30, 0),
+                Spacing = 25,
+                HorizontalOptions = LayoutOptions.Center
+            };
+            Content = new ScrollView { Content = newLayout };
+        }
 
-		VerticalStackLayout? currentLayout = (Content as ScrollView).Content as VerticalStackLayout ?? throw new InvalidOperationException("O layout atual não é um VerticalStackLayout.");
+        VerticalStackLayout? currentLayout = (Content as ScrollView)?.Content as VerticalStackLayout ?? throw new InvalidOperationException("O layout atual não é um VerticalStackLayout.");
+        currentLayout.Padding = new Thickness(30, 100, 30, 0);
+        currentLayout.HorizontalOptions = LayoutOptions.Center;
 
-		Label titleLabel = LabelFactory.CreateTitleLabel("Teste da biblioteca de componentes");
-		currentLayout?.Children.Add(titleLabel);
+        currentLayout?.Children.Add(ButtonFactory.CreateButton(ButtonType.DEFAULT_BUTTON));
+        currentLayout?.Children.Add(ButtonFactory.CreateButton(ButtonType.CONFIRM_BUTTON));
+        currentLayout?.Children.Add(ButtonFactory.CreateButton(ButtonType.CANCEL_BUTTON));
+        currentLayout?.Children.Add(ButtonFactory.CreateButton(ButtonType.THEME_BUTTON));
 
-		Label bodyLabel = LabelFactory.CreateBodyLabel("Esta é uma demonstração de como a biblioteca de componentes funciona. Você pode mudar o tema clicando no botão abaixo.");
-		currentLayout?.Children.Add(bodyLabel);
-
-		Label themeLabel = LabelFactory.CreateLabel($"Tema Atual: {ThemeManagerSingleton.Instance.CurrentTheme}");
-		currentLayout?.Children.Add(themeLabel);
-
-		Button themeToggleButton = ButtonFactory.CreateButton("Mudar Tema", OnToggleThemeClicked);
-		currentLayout?.Children.Add(themeToggleButton);
-		
-		BackgroundColor = ThemeManagerSingleton.Instance.CurrentColors.Background;
+        BackgroundColor = ThemeManagerSingleton.Instance.CurrentColors.Background;
     }
 
     private void OnThemeManagerPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -67,3 +62,4 @@ public partial class MainPage : ContentPage
         };
     }
 }
+
