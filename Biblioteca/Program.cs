@@ -77,7 +77,7 @@ public class Program
             Console.WriteLine("\" e capacidade Maxima permitida para a estande: 10000");
             Console.Write("Tipo estande -> ");
 
-            if (!int.TryParse(Console.ReadLine(), out opcEstande) || opcEstande < 0 && opcEstande >= types.Length)
+            if (!int.TryParse(Console.ReadLine(), out opcEstande) || opcEstande < 0 || opcEstande >= types.Length)
             {
                 Console.WriteLine("Entrada Invalida!");
                 return;
