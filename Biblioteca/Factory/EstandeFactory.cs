@@ -4,7 +4,7 @@ public class EstandeFactory
 {
     private static EstandeFactory?[] estandeFactory = Assembly.GetExecutingAssembly().GetTypes()
                             .Where(t => t.IsSubclassOf(typeof(EstandeFactory)) && !t.IsAbstract)
-                            .Select(t => (EstandeFactory)Activator.CreateInstance(t))
+                            .Select(t => (EstandeFactory?)Activator.CreateInstance(t))
                             .ToArray();
 
     protected Estande? estande;
@@ -21,10 +21,8 @@ public class EstandeFactory
             throw new ArgumentOutOfRangeException(nameof(capacity), "A capacidade da estande nao pode ser maior que 10000.");
         }
 
-        for (int i = 0; i < estandeFactory.Length; i++)
+        foreach (EstandeFactory? ef in estandeFactory)
         {
-            EstandeFactory? ef = estandeFactory[i];
-
             if (ef != null && ef.estande != null)
             {
                 if (ef.estande.GetEstandeType() == type.ToString())
