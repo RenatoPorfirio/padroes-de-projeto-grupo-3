@@ -1,3 +1,6 @@
+using System.Diagnostics.CodeAnalysis;
+using System.Net;
+
 public class BookManagement
 {
     private Dictionary<EstandeType, List<Estande>> biblioteca;
@@ -28,21 +31,80 @@ public class BookManagement
         }
     }
 
-    public string? GetBook(EstandeType type, string bookName)
+    public void CountBooksByName(string bookName, EstandeType? type = null)
     {
-        string book = "";
-        List<Estande> estandes = getEstandes(type);
-        if (estandes.Count >= 0)
+        if (biblioteca.Count == 0)
         {
-            foreach (Estande estande in estandes)
+            Console.WriteLine("A biblioteca nao possue estandes de nenhum tipo no momento.");
+            return;
+        }
+
+        foreach (KeyValuePair<EstandeType, List<Estande>> estandesPair in biblioteca)
+        {
+            Dictionary<int, int> keyEstandePairs = new Dictionary<int, int>();
+            List<Estande> estandes = estandesPair.Value;
+            int acc;
+
+            for (int i = 0; i < estandes.Count; i++)
             {
-                book = estande.GetBook(bookName);
-                if (book != "")
-                    return book;
+                if ((acc = estandes[i].CountBooksByName(bookName)) != 0)
+                    keyEstandePairs.Add(i, acc);
+            }
+
+            if (keyEstandePairs.Count == 0)
+            {
+                Console.WriteLine(
+                    "-------------------------------////----------------------------------\n" +
+                    $"Nao foi encontrado nenhum registro do livro: \"{bookName}\" em nenhuma estande do tipo: \"{estandesPair.Key.ToString()}\""
+                );
+            }
+            else
+            {
+                Console.WriteLine(
+                    "-------------------------------////----------------------------------\n" +
+                    $"O livro: \"{bookName}\" da sessao: \"{estandesPair.Key.ToString()}\" foi encontrado nas seguintes estandes:"
+                );
+
+                foreach (KeyValuePair<int, int> pair in keyEstandePairs)
+                {
+                    Console.WriteLine($"Estande: {pair.Key}, quantidade = {pair.Value}");
+                }
             }
         }
-        return null;
     }
-    
+
+    public void GetBook(EstandeType type, string bookName)
+    {
+        int estandeIndex = -1;
+        List<Estande> estandes = getEstandes(type);
+
+        if (estandes.Count >= 0)
+        {
+            for (int i = 0; i < estandes.Count; i++)
+            {
+                if (estandes[i].GetBook(bookName) != "")
+                {
+                    estandeIndex = i; break;
+                }
+            }
+        }
+
+        if (estandeIndex == -1)
+        {
+            Console.WriteLine($"O livro: \"{bookName}\" nao foi em nenhuma estande do tipo: {type.ToString()}");
+        }
+        else
+        {
+            Console.WriteLine(
+                $"O livro: \"{bookName}\" do tipo: \"{type.ToString()}\" foi encontrado na estande de indice: {estandeIndex}"
+            );
+        }
+    }
+
+    public int CountEstandesByType(EstandeType type)
+    {
+        return getEstandes(type).Count;
+    }
+
     private List<Estande> getEstandes(EstandeType type) => this.biblioteca[key: type];
 }
