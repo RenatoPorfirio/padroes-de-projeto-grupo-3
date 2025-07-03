@@ -22,17 +22,29 @@ public class ScienceEstande : Estande
         }
     }
 
+    public override int CountBooksByName(string bookName)
+    {
+        if (this.scienceBooksLisk != null)
+        {
+            int count = 0;
+            foreach (string book in scienceBooksLisk)
+            {
+                if (book == bookName)
+                    count++;
+            }
+            return count;
+        }
+        return -1;
+    }
+
     public override string GetBook(string bookName)
     {
         if (this.scienceBooksLisk != null)
         {
-            int quant = this.scienceBooksLisk.Count;
-            for (int i = 0; i < quant; i++)
+            foreach (string book in scienceBooksLisk)
             {
-                if (this.scienceBooksLisk[i] == bookName)
-                {
-                    return bookName;
-                }
+                if (book == bookName)
+                    return book;
             }
         }
         return "";
