@@ -30,6 +30,20 @@ public class LiteratureEstande : Estande
         }
     }
 
+    public override int CountBooksByName(string bookName)
+    {
+        if (literatureEstande != null)
+        {
+            int count = 0;
+            for (int i = 0; i < capacity; i++)
+                for (int j = 0; j < capacity; j++)
+                    if (literatureEstande[i, j] != null && literatureEstande[i, j] == bookName)
+                        count++;
+            return count;
+        }
+        return -1;
+    }
+
     public override string GetBook(string bookName)
     {
         if (literatureEstande != null)
